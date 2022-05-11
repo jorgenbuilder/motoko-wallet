@@ -21,13 +21,13 @@ jobs:
           node-version: '17'
       - name: Canister test suite
         run: |
-          cd canister
+          cd /canister
           npm i
           npm run make-admin
           npm run test:dfx
       - name: Web app test suite
         run: |
-          cd ../web-app
+          cd /web-app
           npm i
           npm t
         env:
