@@ -1,0 +1,128 @@
+[[module.Admins]]
+= Admins
+
+Provides administrative access control and administrator management.
+
+[[type.Factory]]
+== Factory
+
+[source.no-repl,motoko,subs=+macros]
+----
+class Factory(state : xref:#type.State[State])
+----
+
+
+
+
+
+[[Factory.backup]]
+=== backup
+
+[source.no-repl,motoko,subs=+macros]
+----
+func backup() : pass:[[]Principalpass:[]]
+----
+
+Returns all state of the admin module.
+
+[[Factory.restore]]
+=== restore
+
+[source.no-repl,motoko,subs=+macros]
+----
+func restore(backup : xref:#type.StableState[StableState]) : ()
+----
+
+Restores state of admin module from backup.
+
+[[Factory._isAdmin]]
+=== _isAdmin
+
+[source.no-repl,motoko,subs=+macros]
+----
+func _isAdmin(p : Principal) : Bool
+----
+
+Use this to add an admin-only restriction.
+ex: assert(_isAdmin(caller));
+
+[[Factory.addAdmin]]
+=== addAdmin
+
+[source.no-repl,motoko,subs=+macros]
+----
+func addAdmin(caller : Principal, p : Principal) : ()
+----
+
+Adds a new principal as an admin.
+
+[[Factory.removeAdmin]]
+=== removeAdmin
+
+[source.no-repl,motoko,subs=+macros]
+----
+func removeAdmin(caller : Principal, p : Principal) : ()
+----
+
+Removes the given principal from the list of admins.
+
+[[Factory.isAdmin]]
+=== isAdmin
+
+[source.no-repl,motoko,subs=+macros]
+----
+func isAdmin(caller : Principal, p : Principal) : Bool
+----
+
+Check whether the given principal is an admin.
+
+[[Factory.getAdmins]]
+=== getAdmins
+
+[source.no-repl,motoko,subs=+macros]
+----
+func getAdmins() : pass:[[]Principalpass:[]]
+----
+
+Return a list of all admins.
+
+[[type.StableState]]
+== StableState
+
+[source.no-repl,motoko,subs=+macros]
+----
+type StableState = { s_admins : pass:[[]Principalpass:[]] }
+----
+
+Stable state utilized by this module.
+
+[[type.Dependencies]]
+== Dependencies
+
+[source.no-repl,motoko,subs=+macros]
+----
+type Dependencies = { _log : (caller : Principal, method : Text, message : Text) -> () }
+----
+
+External state and functions utilized by this module.
+
+[[type.State]]
+== State
+
+[source.no-repl,motoko,subs=+macros]
+----
+type State = xref:#type.StableState[StableState] and xref:#type.Dependencies[Dependencies]
+----
+
+Total state utilized by this module.
+
+[[type.Interface]]
+== Interface
+
+[source.no-repl,motoko,subs=+macros]
+----
+type Interface = { _isAdmin : (p : Principal) -> Bool; addAdmin : (caller : Principal, p : Principal) -> (); removeAdmin : (caller : Principal, p : Principal) -> (); isAdmin : (caller : Principal, p : Principal) -> Bool }
+----
+
+
+

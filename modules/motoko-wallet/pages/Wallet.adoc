@@ -1,0 +1,127 @@
+[[module.Wallet]]
+= Wallet
+
+Primary Motoko Wallet module.
+
+[[type.Factory]]
+== Factory
+
+[source.no-repl,motoko,subs=+macros]
+----
+class Factory(state : xref:#type.State[State])
+----
+
+
+
+
+
+[[type.CallResult]]
+== CallResult
+
+[source.no-repl,motoko,subs=+macros]
+----
+type CallResult = {#reply : Blob; #proposal : Nat}
+----
+
+
+
+[[type.NeuronId]]
+== NeuronId
+
+[source.no-repl,motoko,subs=+macros]
+----
+type NeuronId = Nat
+----
+
+
+
+[[type.NeuronIdOrSubaccount]]
+== NeuronIdOrSubaccount
+
+[source.no-repl,motoko,subs=+macros]
+----
+type NeuronIdOrSubaccount = {#Subaccount : pass:[[]Nat8pass:[]]; #NeuronId : xref:#type.NeuronId[NeuronId]}
+----
+
+
+
+[[type.ConfigureWalletCommand]]
+== ConfigureWalletCommand
+
+[source.no-repl,motoko,subs=+macros]
+----
+type ConfigureWalletCommand = {#addToken : { principal : Principal; standard : Text; symbol : Text }; #removeToken : Principal; #addNNSNeuron : xref:#type.NeuronIdOrSubaccount[NeuronIdOrSubaccount]; #removeNNSNeuron : xref:#type.NeuronIdOrSubaccount[NeuronIdOrSubaccount]; #addSNSNeuron : xref:#type.NeuronIdOrSubaccount[NeuronIdOrSubaccount]; #removeSNSNeuron : xref:#type.NeuronIdOrSubaccount[NeuronIdOrSubaccount]; #addNFT : { principal : Principal; standard : Text; collection : Text }; #removeNFT : Principal; #addAllow : pass:[[]{ principal : Principal; function : Text; service : Text }pass:[]]; #removeAllow : pass:[[]{ principal : Principal; function : Text }pass:[]]; #setDebug : Bool; #purgeDebug; #purgeFunctionLog; #purgeConfigLog; #sendCycles : { principal : Principal; amount : Nat }; #setMultiSig : {#owner : pass:[[]Principalpass:[]]; #multisig : { owner : ?pass:[[]Principalpass:[]]; n : Nat; m : pass:[[]Principalpass:[]]; isPrivate : Bool }; #remote : { owner : ?pass:[[]Principalpass:[]]; principal : Principal }; #local : { owner : ?pass:[[]Principalpass:[]]; principal : Principal }}}
+----
+
+
+
+[[type.ConfigureWalletResponse]]
+== ConfigureWalletResponse
+
+[source.no-repl,motoko,subs=+macros]
+----
+type ConfigureWalletResponse = {  }
+----
+
+
+
+[[type.ProposalStatus]]
+== ProposalStatus
+
+[source.no-repl,motoko,subs=+macros]
+----
+type ProposalStatus = { status : {#pass; #open; #reject; #error : xref:#type.CommonError[CommonError]}; votes : ?{ accept : pass:[[]Principalpass:[]]; reject : pass:[[]Principalpass:[]]; outstanding : ?pass:[[]pass:[[]Principalpass:[]]pass:[]] } }
+----
+
+
+
+[[type.CommonError]]
+== CommonError
+
+[source.no-repl,motoko,subs=+macros]
+----
+type CommonError = {  }
+----
+
+
+
+[[type.StableState]]
+== StableState
+
+[source.no-repl,motoko,subs=+macros]
+----
+type StableState = {  }
+----
+
+Stable state utilized by this module.
+
+[[type.Dependencies]]
+== Dependencies
+
+[source.no-repl,motoko,subs=+macros]
+----
+type Dependencies = { _log : (caller : Principal, method : Text, message : Text) -> () }
+----
+
+External state and functions utilized by this module.
+
+[[type.State]]
+== State
+
+[source.no-repl,motoko,subs=+macros]
+----
+type State = xref:#type.StableState[StableState] and xref:#type.Dependencies[Dependencies]
+----
+
+Total state utilized by this module.
+
+[[type.Interface]]
+== Interface
+
+[source.no-repl,motoko,subs=+macros]
+----
+type Interface = { cycleBalance : shared query () -> async Nat; defaultAccount : shared query () -> async Text; tokenList : shared query () -> async pass:[[]{ principal : Principal; standard : Text; symbol : Text }pass:[]]; nftList : shared query () -> async pass:[[]{ principal : Principal; standard : Text; collection : Text }pass:[]]; allowList : shared query () -> async pass:[[]{ principal : Principal; function : Text; service : Text }pass:[]]; functionLog : shared query () -> async (page : Nat, skip : Nat, count : Nat); configLog : shared query () -> async (page : Nat, skip : Nat, count : Nat); proposals : shared query (page : Nat, skip : Nat, count : Nat) -> async pass:[[]{ proposal : Nat; proposalResult : xref:#type.ProposalStatus[ProposalStatus]; principal : Principal; function : Text; data : Blob; timestamp : Nat }pass:[]]; configProposals : shared query (page : Nat, skip : Nat, count : Nat) -> async pass:[[]{ proposal : Nat; proposalResult : xref:#type.ProposalStatus[ProposalStatus]; command : xref:#type.ConfigureWalletCommand[ConfigureWalletCommand]; timestamp : Nat }pass:[]]; configureWallet : shared query (command : xref:#type.ConfigureWalletCommand[ConfigureWalletCommand]) -> async Result.Result<xref:#type.ConfigureWalletResponse[ConfigureWalletResponse], xref:#type.CommonError[CommonError]>; call : shared query (principal : Principal, function : Text, data : Blob) -> async xref:#type.CallResult[CallResult]; signPropsal : shared query (proposal : Nat, {#sign; #reject}) -> async Result.Result<xref:#type.ProposalStatus[ProposalStatus], xref:#type.CommonError[CommonError]>; signConfigProposal : shared query (proposal : Nat, {#sign; #reject}) -> async Result.Result<xref:#type.ProposalStatus[ProposalStatus], xref:#type.CommonError[CommonError]>; walletReceive : () -> async () }
+----
+
+The public compliance interface.
+
