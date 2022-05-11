@@ -36,7 +36,7 @@ jobs:
       # if: github.ref != 'refs/heads/next-moc' && github.base_ref != 'refs/heads/next-moc'
       run: |
         pushd canister/doc
-        mo-doc --source ../canister/lib --output modules/base-libraries/pages/ --format adoc
+        mo-doc --source /canister/lib --output modules/base-libraries/pages/ --format adoc
         popd
     - name: Upload docs
       uses: JamesIves/github-pages-deploy-action@releases/v3
