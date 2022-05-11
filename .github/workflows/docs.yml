@@ -5,6 +5,10 @@ on:
     # branches:
       # - main
 
+env:
+  vessel_version: "v0.6.3"
+  moc_version: "0.5.14"
+
 jobs:
   docs:
     # if: github.ref != 'refs/heads/next-moc' && github.base_ref != 'refs/heads/next-moc'
