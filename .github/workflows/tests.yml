@@ -1,8 +1,7 @@
 name: Test Canister
 
 on:
-  - push
-  - pull_request
+  push
 
 env:
   vessel_version: "v0.6.3"
