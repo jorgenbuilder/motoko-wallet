@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - doc-pages
+  pull_request:
 
 env:
   vessel_version: "v0.6.3"
