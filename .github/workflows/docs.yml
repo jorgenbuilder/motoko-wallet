@@ -10,7 +10,7 @@ env:
   node_version: "17"
 
 jobs:
-  tests:
+  docs:
     # if: github.ref != 'refs/heads/next-moc' && github.base_ref != 'refs/heads/next-moc'
     runs-on: ubuntu-18.04
     steps:
@@ -37,7 +37,7 @@ jobs:
     - name: "docs"
       # if: github.ref != 'refs/heads/next-moc' && github.base_ref != 'refs/heads/next-moc'
       run: |
-        pushd doc
+        pushd canister/doc
         mo-doc --source ../canister/lib --output modules/base-libraries/pages/ --format adoc
         popd
     - name: Upload docs
@@ -46,4 +46,4 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: doc-pages
-        FOLDER: doc/
+        FOLDER: canister/doc/
