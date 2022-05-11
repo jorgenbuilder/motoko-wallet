@@ -2,8 +2,8 @@ name: Build docs
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+      # - main
 
 jobs:
   docs:
