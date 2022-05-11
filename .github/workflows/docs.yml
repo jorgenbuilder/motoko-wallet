@@ -1,11 +1,9 @@
 name: Build docs
 
 on:
-  push
-
-env:
-  vessel_version: "v0.6.3"
-  moc_version: "0.5.14"
+  push:
+    branches:
+      - main
 
 jobs:
   docs:

@@ -1,7 +1,9 @@
 name: Test Canister
 
 on:
-  push
+  push:
+    branches-ignore:
+      - doc-pages
 
 env:
   vessel_version: "v0.6.3"
