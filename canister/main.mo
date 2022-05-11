@@ -3,7 +3,8 @@ import Principal "mo:base/Principal";
 
 import Canistergeek "mo:canistergeek/canistergeek";
 
-import Admins "Admins";
+import Admins "lib/Admins";
+import Wallet "lib/Wallet";
 
 shared ({ caller = creator }) actor class MotokoWallet () {
 
@@ -22,10 +23,6 @@ shared ({ caller = creator }) actor class MotokoWallet () {
     // Heartbeat
     private stable var s_heartbeatIntervalSeconds : Nat = 30;
     private stable var s_heartbeatLastBeat : Int = 0;
-
-    public query func ping () : async Text {
-        "pong";
-    };
 
 
     ///////////////
@@ -50,6 +47,11 @@ shared ({ caller = creator }) actor class MotokoWallet () {
         s_canistergeekLoggerUD := null;
     };
 
+    /// Basic healthcheck method.
+    public query func ping () : async Text {
+        "pong";
+    };
+
 
     ////////////////
     // Heartbeat //
@@ -71,20 +73,20 @@ shared ({ caller = creator }) actor class MotokoWallet () {
 
     private let canistergeekMonitor = Canistergeek.Monitor();
 
-    // Returns collected data based on passed parameters. Called from browser.
+    /// Returns collected data based on passed parameters. Called from browser.
     public query ({ caller }) func getCanisterMetrics(parameters: Canistergeek.GetMetricsParameters): async ?Canistergeek.CanisterMetrics {
         assert(_Admins._isAdmin(caller));
         canistergeekMonitor.getMetrics(parameters);
     };
 
-    // Force collecting the data at current time. Called from browser or any canister "update" method.
+    /// Force collecting the data at current time. Called from browser or any canister "update" method.
     public shared ({ caller }) func collectCanisterMetrics(): async () {
         assert(_Admins._isAdmin(caller));
         _log(caller, "collectCanisterMetrics", "ADMIN :: Forcing canister metrics collection");
         canistergeekMonitor.collectMetrics();
     };
 
-    // This needs to be place in every update call. Captures canister metrics
+    /// This needs to be place in every update call. Captures canister metrics
     private func _captureMetrics () : () {
         canistergeekMonitor.collectMetrics();
     };
@@ -93,12 +95,13 @@ shared ({ caller = creator }) actor class MotokoWallet () {
 
     private let canistergeekLogger = Canistergeek.Logger();
 
-    // Returns collected log messages based on passed parameters. Called from browser.
+    /// Returns collected log messages based on passed parameters. Called from browser.
     public query ({ caller }) func getCanisterLog(request: ?Canistergeek.CanisterLogRequest) : async ?Canistergeek.CanisterLogResponse {
         assert(_Admins._isAdmin(caller));
         canistergeekLogger.getLog(request);
     };
 
+    /// Push a message to canister logs.
     private func _log (
         caller  : Principal,
         method  : Text,
@@ -116,7 +119,7 @@ shared ({ caller = creator }) actor class MotokoWallet () {
     // Allows us to manage access to canister methods
     
 
-    let _Admins = Admins.Admins({
+    let _Admins = Admins.Factory({
         s_admins;
         _log;
     });
