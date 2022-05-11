@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -rf _out
+mkdir -p _out
+$(vessel bin)/mo-doc --source ../lib --output _out/html
