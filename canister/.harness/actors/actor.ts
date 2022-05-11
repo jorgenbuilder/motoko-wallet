@@ -9,9 +9,7 @@ import { _SERVICE } from './interface/motoko-wallet/motoko-wallet.did.d'
 
 dotenv.config({
     path: './.env/.env.local'
-})
-
-console.log(process.env)
+});
 
 const canisters = JSON.parse(readFileSync(`${__dirname}/../../.dfx/local/canister_ids.json`).toString());
 

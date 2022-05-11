@@ -1,0 +1,33 @@
+name: Test Canister
+
+on:
+  - push
+  - pull_request
+
+env:
+  vessel_version: "v0.6.3"
+  moc_version: "0.5.14"
+  dfx_version: "0.9.3"
+  node_version: "17"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aviate-labs/setup-dfx@v0.2.3
+      - uses: actions/setup-node@v2
+      - name: Canister test suite
+        run: |
+          cd canister
+          npm i
+          npm run make-admin
+          npm run test:dfx
+      - name: Web app test suite
+        run: |
+          cd ../web-app
+          npm i
+          npm t
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

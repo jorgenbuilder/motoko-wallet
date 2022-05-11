@@ -8,6 +8,5 @@ test('Test harness operational', () => {
 
 test('Test environment operational', async () => {
     const pong = await MotokoWalletAnon.ping();
-    console.log(pong)
     expect(pong).toBe('pong');
 });
