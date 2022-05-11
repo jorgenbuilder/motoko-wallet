@@ -6,8 +6,6 @@ on:
 env:
   vessel_version: "v0.6.3"
   moc_version: "0.5.14"
-  dfx_version: "0.9.3"
-  node_version: "17"
 
 jobs:
   docs:
